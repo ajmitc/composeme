@@ -28,6 +28,8 @@ public class SongPanel extends JPanel {
         taNoteCardCodes.setWrapStyleWord(true);
         taNoteCardCodes.setLineWrap(true);
 
+        taNoteCardCodes.setText("0212 0201 0012 0222 0234 0242");
+
         btnPlay = new JButton("Play");
 
         setLayout(new FlowLayout(FlowLayout.LEFT));

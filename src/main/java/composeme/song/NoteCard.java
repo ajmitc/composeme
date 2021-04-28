@@ -18,4 +18,9 @@ public class NoteCard {
     public List<Note> getNotes() {
         return notes;
     }
+
+    public void addNotes(Note ... notes){
+        for (Note note: notes)
+            this.notes.add(note);
+    }
 }

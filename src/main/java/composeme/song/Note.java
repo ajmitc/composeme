@@ -15,6 +15,24 @@ public class Note {
         this.note = note;
     }
 
+    public Note(NoteEnum note, int octave){
+        this.note = note;
+        this.octave = octave;
+    }
+
+    public Note(NoteEnum note, int octave, Duration duration){
+        this.note = note;
+        this.octave = octave;
+        this.duration = duration;
+    }
+
+    public Note(NoteEnum note, int octave, Duration duration, boolean dottedDuration){
+        this.note = note;
+        this.octave = octave;
+        this.duration = duration;
+        this.dottedDuration = dottedDuration;
+    }
+
     public Note(NoteEnum note, int octave, Accidental accidental, Duration duration, boolean dottedDuration){
         this.note = note;
         this.octave = octave;
