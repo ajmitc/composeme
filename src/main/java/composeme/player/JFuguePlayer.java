@@ -2,26 +2,42 @@ package composeme.player;
 
 import composeme.song.Note;
 import composeme.song.Song;
+import org.jfugue.pattern.Pattern;
 import org.jfugue.player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class JFuguePlayer implements composeme.player.Player {
-    private Player player;
+    private static Logger logger = Logger.getLogger(JFuguePlayer.class.getName());
 
     public JFuguePlayer(){
-        player = new Player();
     }
 
     public void play(Song song){
         String fugueSong = toJFugueSong(song);
-        player.play(fugueSong);
+        logger.info(fugueSong);
+        new Player().play(fugueSong);
+
+        // Different V# are played simultaneously
+        //Player player = new Player();
+        //Pattern p1 = new Pattern("V0 I[Piano] Eq Ch. | Eq Ch. | Dq Eq Dq Cq");
+        //Pattern p2 = new Pattern("V1 I[Flute] Rw     | Rw     | GmajQQQ  CmajQ");
+        //player.play(p1, p2);
+    }
+
+    public void play(Pattern song){
+        Player player = new Player();
+        player.play(song);
     }
 
     private String toJFugueSong(Song song){
         List<String> noteList = new ArrayList<>();
+        if (song.getInstrument() != null){
+            noteList.add("I[" + song.getInstrument().getName() + "]");
+        }
         for (Note note: song.getNotes()){
             StringBuilder sb = new StringBuilder();
             sb.append(note.getNote().name());
@@ -43,5 +59,10 @@ public class JFuguePlayer implements composeme.player.Player {
             // "itsy, bitsy spider went up the spout again."
             "F5q F5i F5q G5i A5q. A5q A5i G5q F5i G5q A5i F5q. Rq.";
          */
+    }
+
+    public void save(Song song, String path){
+        // save as a midi file for use in the next example
+        //player.saveMidi(song, new File("spider.midi"));
     }
 }
