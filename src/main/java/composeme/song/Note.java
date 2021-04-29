@@ -41,6 +41,17 @@ public class Note {
         this.dottedDuration = dottedDuration;
     }
 
+    public double getNumBeats(){
+        double beats = this.duration.getBeats();
+        if (dottedDuration)
+            beats += (this.duration.getBeats() / 2.0);
+        return beats;
+    }
+
+    public int getNoteValue(){
+        return note.ordinal() + (octave * 7);
+    }
+
     public NoteEnum getNote() {
         return note;
     }

@@ -8,6 +8,7 @@ import org.jfugue.pattern.Pattern;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.concurrent.CompletableFuture;
 
 public class Controller {
     private Model model;
@@ -22,7 +23,14 @@ public class Controller {
             public void actionPerformed(ActionEvent actionEvent) {
                 String cardCodes = view.getSongPanel().getTaNoteCardCodes().getText();
                 Song song = convertNoteCardCodesToSong(cardCodes);
-                model.getPlayer().play(song);
+                model.setSong(song);
+                view.refresh();
+                CompletableFuture.runAsync(new Runnable() {
+                    @Override
+                    public void run() {
+                        model.getPlayer().play(song);
+                    }
+                });
 
                 //model.getPlayer().play(getItsyBitsySpider());
             }

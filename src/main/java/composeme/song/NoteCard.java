@@ -34,8 +34,8 @@ public class NoteCard {
 
     private Note flipNote(Note note){
         // Flip note on B5
-        int middleB = NoteEnum.B.ordinal() + (5 * 8);
-        int noteValue = note.getNote().ordinal() + (note.getOctave() * 8);
+        int middleB = N.Bq().getNoteValue();
+        int noteValue = note.getNoteValue();
         int diff = (middleB - noteValue);
         int newValue = middleB + diff;
         int newOctave = newValue / 8;
