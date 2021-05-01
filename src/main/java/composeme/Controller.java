@@ -46,7 +46,7 @@ public class Controller {
             public void itemStateChanged(ItemEvent e) {
                 if (model.getSong() != null){
                     model.getSong().setInstrument((Instrument) view.getSongPanel().getCbInstrument().getSelectedItem());
-                    //System.out.println("Set Instrument to " + model.getSong().getInstrument());
+                    System.out.println("Set Instrument to " + model.getSong().getInstrument());
                 }
             }
         });
@@ -81,8 +81,13 @@ public class Controller {
     }
 
     private Song convertNoteCardCodesToSong(String codes){
-        Song song = new Song();
-        //song.setInstrument(Instrument.VOICE);
+        Song song = model.getSong();
+        if (song == null){
+            song = new Song();
+            model.setSong(song);
+            song.setInstrument((Instrument) view.getSongPanel().getCbInstrument().getSelectedItem());
+        }
+        song.getNotes().clear();
         String[] cardCodes = codes.split(" ");
         for (String cardCode: cardCodes){
             NoteCard noteCard = model.getNoteCardDeck().getCard(cardCode);

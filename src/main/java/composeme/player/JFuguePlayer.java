@@ -35,6 +35,7 @@ public class JFuguePlayer implements composeme.player.Player {
 
     private String toJFugueSong(Song song){
         List<String> noteList = new ArrayList<>();
+        System.out.println("JFuguePlayer - instrument = " + song.getInstrument());
         if (song.getInstrument() != null){
             noteList.add("I[" + song.getInstrument().getName() + "]");
         }
