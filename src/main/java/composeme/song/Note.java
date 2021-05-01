@@ -6,6 +6,7 @@ public class Note {
     private Accidental accidental;
     private Duration duration = Duration.QUARTER;
     private boolean dottedDuration = false; // Add 50% of duration
+    private String cardCode;
 
     public Note(){
 
@@ -90,5 +91,13 @@ public class Note {
 
     public void setDottedDuration(boolean dottedDuration) {
         this.dottedDuration = dottedDuration;
+    }
+
+    public String getCardCode() {
+        return cardCode;
+    }
+
+    public void setCardCode(String cardCode) {
+        this.cardCode = cardCode;
     }
 }

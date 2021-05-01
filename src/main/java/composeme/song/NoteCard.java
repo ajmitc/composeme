@@ -38,8 +38,8 @@ public class NoteCard {
         int noteValue = note.getNoteValue();
         int diff = (middleB - noteValue);
         int newValue = middleB + diff;
-        int newOctave = newValue / 8;
-        NoteEnum newNote = NoteEnum.values()[newValue % 8];
+        int newOctave = newValue / 7;
+        NoteEnum newNote = NoteEnum.values()[newValue % 7];
         Note flippedNote = new Note(newNote, newOctave, note.getAccidental(), note.getDuration(), note.isDottedDuration());
         return flippedNote;
     }

@@ -1,5 +1,6 @@
 package composeme.song;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,9 +16,17 @@ public class NoteCardDeck {
         addNoteCard("0012", N.Bq(), N.Gh(), N.Bq());
         addNoteCard("0011", getCard("0012").flipNotes());
 
+        addNoteCard("0111", N.Gi(), N.Di(6), N.Bi(), N.Gi(), N.Ai(), N.Ci(6), N.Aq());
+        addNoteCard("0112", getCard("0111").flipNotes());
+
         addNoteCard("0143", N.Bq(), N.Cq(6), N.Dq(6), N.Bq());
+        addNoteCard("0144", getCard("0143").flipNotes());
 
         addNoteCard("0163", N.Gq(), N.Aq(6), N.Gq(), N.Ai(6), N.Bi(6));
+        addNoteCard("0164", getCard("0163").flipNotes());
+
+        addNoteCard("0191", N.Bi(), N.Di(6), N.Bi(), N.Di(6), N.Bi(), N.Gi(), N.Bq());
+        addNoteCard("0192", getCard("0191").flipNotes());
 
         addNoteCard("0201", N.Bq(), N.Gq(), N.Gh());
         addNoteCard("0202", getCard("0201").flipNotes());
@@ -26,7 +35,7 @@ public class NoteCardDeck {
         addNoteCard("0211", getCard("0212").flipNotes());
 
         addNoteCard("0214", N.Bq(), N.Ci(6), N.Ci(6), N.Ai(), N.Ai(), N.Cq(6));
-        //addNoteCard("0211", getCard("0212").flipNotes());
+        addNoteCard("0213", getCard("0214").flipNotes());
 
         addNoteCard("0222", N.Dq(6), N.Dq(6), N.Bi(), N.Ai(), N.Cq(6));
         addNoteCard("0221", getCard("0222").flipNotes());
@@ -39,8 +48,12 @@ public class NoteCardDeck {
 
         addNoteCard("0244", N.Ei(6), N.Ci(6), N.Ai(), N.Ei(), N.Fq(), N.Aq());
         addNoteCard("0263", N.Fq(), N.Fi(6), N.Ei(6), N.Ch(6));
+
+        addNoteCard("0272", N.Eq(), N.Gi(), N.Ai(), N.Ci(6), N.Di(6), N.Eq());
         addNoteCard("0273", N.Fq(6), N.Di(6), N.Ci(6), N.Ai(), N.Gi(), N.Fq());
+
         addNoteCard("0283", N.Fh(), N.Cq(6), N.Fq());
+        addNoteCard("0284", getCard("0283").flipNotes());
     }
 
     public NoteCard getCard(String code){
@@ -49,16 +62,24 @@ public class NoteCardDeck {
         return null;
     }
 
+    public Collection<NoteCard> getCards(){
+        return noteCardMap.values();
+    }
+
 
     private void addNoteCard(String code, Note ... notes){
         noteCardMap.put(code, new NoteCard(code));
-        for (Note note: notes)
+        for (Note note: notes) {
+            note.setCardCode(code);
             noteCardMap.get(code).getNotes().add(note);
+        }
     }
 
     private void addNoteCard(String code, List<Note> notes){
         noteCardMap.put(code, new NoteCard(code));
-        for (Note note: notes)
+        for (Note note: notes) {
+            note.setCardCode(code);
             noteCardMap.get(code).getNotes().add(note);
+        }
     }
 }

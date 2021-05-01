@@ -6,8 +6,12 @@ import composeme.song.Song;
 import composeme.view.View;
 import org.jfugue.pattern.Pattern;
 
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.concurrent.CompletableFuture;
 
 public class Controller {
@@ -21,20 +25,45 @@ public class Controller {
         view.getSongPanel().getBtnPlay().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                String cardCodes = view.getSongPanel().getTaNoteCardCodes().getText();
-                Song song = convertNoteCardCodesToSong(cardCodes);
-                model.setSong(song);
-                view.refresh();
+                updateFromCodes();
                 CompletableFuture.runAsync(new Runnable() {
                     @Override
                     public void run() {
-                        model.getPlayer().play(song);
+                        model.getPlayer().play(model.getSong());
                     }
                 });
 
                 //model.getPlayer().play(getItsyBitsySpider());
             }
         });
+
+        view.getNoteCardPanelJList().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+            }
+        });
+
+        view.getNoteCardPanelJList().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if (e.getClickCount() >= 2){
+                    NoteCard noteCard = view.getNoteCardPanelJList().getSelectedValue();
+                    view.getSongPanel().getTaNoteCardCodes().setText(view.getSongPanel().getTaNoteCardCodes().getText() + " " + noteCard.getCode());
+                    updateFromCodes();
+                }
+            }
+        });
+
+        updateFromCodes();
+    }
+
+    private void updateFromCodes(){
+        String cardCodes = view.getSongPanel().getTaNoteCardCodes().getText();
+        Song song = convertNoteCardCodesToSong(cardCodes);
+        model.setSong(song);
+        view.updateClefsFromModel();
+        view.refresh();
     }
 
     private Song convertNoteCardCodesToSong(String codes){

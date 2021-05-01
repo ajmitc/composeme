@@ -20,6 +20,8 @@ public class SongPanel extends JPanel {
 
     private ClefPanel clefPanel1;
     private ClefPanel clefPanel2;
+    private ClefPanel clefPanel3;
+    private ClefPanel clefPanel4;
 
     public SongPanel(Model model, View view){
         this.model = model;
@@ -36,13 +38,17 @@ public class SongPanel extends JPanel {
 
         btnPlay = new JButton("Play");
 
-        clefPanel1 = new ClefPanel(model, view, 1);
-        clefPanel2 = new ClefPanel(model, view, 2);
+        clefPanel1 = new ClefPanel(model, view, 0);
+        clefPanel2 = new ClefPanel(model, view, 1);
+        clefPanel3 = new ClefPanel(model, view, 2);
+        clefPanel4 = new ClefPanel(model, view, 3);
 
         JPanel clefsPanel = new JPanel();
         clefsPanel.setLayout(new BoxLayout(clefsPanel, BoxLayout.Y_AXIS));
         clefsPanel.add(clefPanel1);
         clefsPanel.add(clefPanel2);
+        clefsPanel.add(clefPanel3);
+        clefsPanel.add(clefPanel4);
 
         JPanel leftPanel = new JPanel();
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
@@ -56,8 +62,11 @@ public class SongPanel extends JPanel {
 
         taNoteCardCodes.addKeyListener(new KeyAdapter() {
             @Override
-            public void keyTyped(KeyEvent e) {
-                super.keyTyped(e);
+            public void keyPressed(KeyEvent e) {
+                super.keyPressed(e);
+                if (e.getKeyCode() == KeyEvent.VK_DELETE || e.getKeyCode() == KeyEvent.VK_BACK_SPACE){
+                    return;
+                }
                 String text = taNoteCardCodes.getText();
                 if (text.isBlank())
                     return;
@@ -76,9 +85,18 @@ public class SongPanel extends JPanel {
         });
     }
 
+    public void updateClefsFromModel(){
+        clefPanel1.setNotesFromModel();
+        clefPanel2.setNotesFromModel();
+        clefPanel3.setNotesFromModel();
+        clefPanel4.setNotesFromModel();
+    }
+
     public void refresh(){
         clefPanel1.refresh();
         clefPanel2.refresh();
+        clefPanel3.refresh();
+        clefPanel4.refresh();
     }
 
     public JTextArea getTaNoteCardCodes() {
