@@ -12,6 +12,14 @@ public class Song {
 
     }
 
+    public double getTotalBeats(){
+        double beats = 0.0;
+        for (Note note: notes){
+            beats += note.getNumBeats();
+        }
+        return beats;
+    }
+
     public String getName() {
         return name;
     }

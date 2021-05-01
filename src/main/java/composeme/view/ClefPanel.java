@@ -24,8 +24,8 @@ public class ClefPanel extends JPanel {
     private static final String G_CLEF_UNICODE = "\uD834\uDD1E";
     private static final String F_CLEF_UNICODE = "\uD834\uDD22";
 
-    private static final int NUM_CARDS_PER_LINE = 3;
-    private static final int NUM_BEATS_PER_CARD = 4;
+    public static final int NUM_CARDS_PER_LINE = 3;
+    public static final int NUM_BEATS_PER_CARD = 4;
     private static final int NOTES_XOFFSET = 70;
     private static final int NOTE_WIDTH  = LINE_SPACING + 2;
     private static final int NOTE_HEIGHT = LINE_SPACING;

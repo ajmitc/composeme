@@ -1,6 +1,7 @@
 package composeme.view;
 
 import composeme.Model;
+import composeme.song.Instrument;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,11 +18,11 @@ public class SongPanel extends JPanel {
 
     private JTextArea taNoteCardCodes;
     private JButton btnPlay;
+    private JButton btnClear;
+    private JComboBox<Instrument> cbInstrument;
 
-    private ClefPanel clefPanel1;
-    private ClefPanel clefPanel2;
-    private ClefPanel clefPanel3;
-    private ClefPanel clefPanel4;
+    private List<ClefPanel> clefPanels = new ArrayList<>();
+    private JPanel clefsPanelPanel;
 
     public SongPanel(Model model, View view){
         this.model = model;
@@ -37,27 +38,40 @@ public class SongPanel extends JPanel {
         taNoteCardCodes.setText("0212 0201 0012 0222 0234 0242");
 
         btnPlay = new JButton("Play");
+        btnClear = new JButton("Clear");
+        cbInstrument = new JComboBox<>();
 
-        clefPanel1 = new ClefPanel(model, view, 0);
-        clefPanel2 = new ClefPanel(model, view, 1);
-        clefPanel3 = new ClefPanel(model, view, 2);
-        clefPanel4 = new ClefPanel(model, view, 3);
+        for (Instrument instrument: Instrument.values()){
+            cbInstrument.addItem(instrument);
+        }
 
-        JPanel clefsPanel = new JPanel();
-        clefsPanel.setLayout(new BoxLayout(clefsPanel, BoxLayout.Y_AXIS));
-        clefsPanel.add(clefPanel1);
-        clefsPanel.add(clefPanel2);
-        clefsPanel.add(clefPanel3);
-        clefsPanel.add(clefPanel4);
+        for (int i = 0; i < 4; ++i){
+            clefPanels.add(new ClefPanel(model, view, i));
+        }
+
+        clefsPanelPanel = new JPanel();
+        clefsPanelPanel.setLayout(new BoxLayout(clefsPanelPanel, BoxLayout.Y_AXIS));
+        for (ClefPanel clefPanel: clefPanels) {
+            clefsPanelPanel.add(clefPanel);
+        }
+
+        JScrollPane clefsPanelPanelScrollPane = new JScrollPane(clefsPanelPanel);
+        clefsPanelPanelScrollPane.getViewport().setMinimumSize(new Dimension(500, 500));
+        clefsPanelPanelScrollPane.getViewport().setPreferredSize(new Dimension(500, 500));
+
+        JPanel buttonpanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        buttonpanel.add(cbInstrument);
+        buttonpanel.add(btnPlay);
+        buttonpanel.add(btnClear);
 
         JPanel leftPanel = new JPanel();
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
         leftPanel.add(taNoteCardCodes);
-        leftPanel.add(btnPlay);
+        leftPanel.add(buttonpanel);
 
         setLayout(new BorderLayout());
         add(leftPanel, BorderLayout.WEST);
-        add(clefsPanel, BorderLayout.CENTER);
+        add(clefsPanelPanelScrollPane, BorderLayout.CENTER);
 
 
         taNoteCardCodes.addKeyListener(new KeyAdapter() {
@@ -86,17 +100,22 @@ public class SongPanel extends JPanel {
     }
 
     public void updateClefsFromModel(){
-        clefPanel1.setNotesFromModel();
-        clefPanel2.setNotesFromModel();
-        clefPanel3.setNotesFromModel();
-        clefPanel4.setNotesFromModel();
+        if (model.getSong() != null) {
+            double totalBeats = model.getSong().getTotalBeats();
+            double numClefs = Math.ceil(totalBeats / (ClefPanel.NUM_CARDS_PER_LINE * ClefPanel.NUM_BEATS_PER_CARD));
+            while (clefPanels.size() < numClefs){
+                ClefPanel clefPanel = new ClefPanel(model, view, clefPanels.size());
+                clefsPanelPanel.add(clefPanel);
+                clefPanels.add(clefPanel);
+            }
+            for (ClefPanel clefPanel : clefPanels)
+                clefPanel.setNotesFromModel();
+        }
     }
 
     public void refresh(){
-        clefPanel1.refresh();
-        clefPanel2.refresh();
-        clefPanel3.refresh();
-        clefPanel4.refresh();
+        for (ClefPanel clefPanel: clefPanels)
+            clefPanel.refresh();
     }
 
     public JTextArea getTaNoteCardCodes() {
@@ -105,5 +124,13 @@ public class SongPanel extends JPanel {
 
     public JButton getBtnPlay() {
         return btnPlay;
+    }
+
+    public JButton getBtnClear() {
+        return btnClear;
+    }
+
+    public JComboBox<Instrument> getCbInstrument() {
+        return cbInstrument;
     }
 }

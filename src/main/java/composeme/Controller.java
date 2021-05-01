@@ -8,10 +8,7 @@ import org.jfugue.pattern.Pattern;
 
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.concurrent.CompletableFuture;
 
 public class Controller {
@@ -34,6 +31,23 @@ public class Controller {
                 });
 
                 //model.getPlayer().play(getItsyBitsySpider());
+            }
+        });
+
+        view.getSongPanel().getBtnClear().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                view.getSongPanel().getTaNoteCardCodes().setText("");
+            }
+        });
+
+        view.getSongPanel().getCbInstrument().addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (model.getSong() != null){
+                    model.getSong().setInstrument((Instrument) view.getSongPanel().getCbInstrument().getSelectedItem());
+                    //System.out.println("Set Instrument to " + model.getSong().getInstrument());
+                }
             }
         });
 
